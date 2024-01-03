@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    /* CSS styles */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #3498db; /* Light blue background */
+    }
+
+    .container {
+      width: 280px;
+      padding: 20px;
+      background-color: #fff; /* White container background */
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    }
+
+    h1 {
+      text-align: center;
+      color: #3498db; /* Light blue heading */
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 8px;
+      color: #333; /* Label color */
+      font-weight: 400;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="submit"] {
+      padding: 10px;
+      margin-bottom:15px;
+      border: 1px solid #3498db; /* Light blue border */
+      border-radius: 4px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      color: #333; /* Text color */
+    }
+
+    input[type="submit"] {
+      background-color: #3498db; /* Light blue submit button */
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #2980b9; /* Darker blue on hover */
+    }
+
+    p {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #666; /* Text color */
+    }
+
+    a {
+      color: #3498db; /* Light blue link color */
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <% if (message) { %>
+            <p style="color: red;"><%= message %></p>
+        <% } %>
+    <form action="/login" method="POST">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <input type="submit" value="Login">
+    </form>
+    <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+  </div>
+</body>
+</html>

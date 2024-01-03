@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Logged In</title>
+  <style>
+    /* Body styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0; /* Light grey background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+  
+    /* Page container */
+    .container {
+      width: 80%;
+      padding: 20px;
+      background-color: #fff; /* White container background */
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+      text-align: center; /* Center align text */
+    }
+  
+    /* Heading style */
+    h1 {
+      color: #333; /* Dark grey heading */
+    }
+  
+    /* Link style */
+    a {
+      color: #3498db; /* Blue link color */
+      text-decoration: none;
+      margin-top: 10px; /* Add space between elements */
+      display: block; /* Display the button as a block element */
+      width: 100px; /* Set button width */
+      margin: 10px auto; /* Center align the button */
+      padding: 8px; /* Add padding to the button */
+      background-color: #3498db; /* Blue button background */
+      color: #fff;
+      border-radius: 4px;
+      transition: background-color 0.3s ease; /* Smooth transition */
+    }
+  
+    a:hover {
+      background-color: #2980b9; /* Darker blue on hover */
+    }
+    .info-button {
+      background-color: #2cb247; /* Red button background */
+      color: #fff;
+      border: none;
+    }
+
+    .user-details {
+      display: none;
+      margin-top: 20px;
+      text-align: left;
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .delete-button {
+      background-color: #e74c3c;
+      color: #fff;
+      border: none;
+      margin-top: 10px;
+      cursor: pointer;
+      padding: 8px 15px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    .delete-button:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome, <%= username %>!</h1>
+    <p>You are logged in.</p>
+    <a href="#" onclick="confirmLogout()">Logout</a>
+    <a href="#" onclick="showDetails()" class="info-button">Info</a>
+
+    <!-- User details display -->
+    <div class="user-details" id="userDetails">
+      <h2>User Details</h2>
+      <p><strong>Username:</strong> <%= username %></p>
+      <p><strong>Email:</strong><%= email %></p>
+      <form action="/delete" method="post">
+        <input type="hidden" name="username" value="<%= username %>">
+        <button onclick="deleteUser()" class="delete-button" type="submit">Delete User</button>
+      </form>
+
+    </div>
+
+    <script>
+      function confirmLogout() {
+        if (confirm("Are you sure you want to logout?")) {
+          window.location.href = "/logout";
+        }
+      }
+
+      function showDetails() {
+        var details = document.getElementById("userDetails");
+        if (details.style.display === "block") {
+          details.style.display = "none";
+        } else {
+          details.style.display = "block";
+        }
+      }
+
+      function deleteUser() {
+        if (confirm("Are you sure you want to delete your account?")) {
+        }
+      }
+    </script>
+  </div>
+</body>
+</html>
