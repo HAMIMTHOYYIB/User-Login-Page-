@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up</title>
+  <style>
+    /* Body styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color:skyblue; /* Light blue background */
+    }
+  
+    /* Page container */
+    .container {
+      width: 80%;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff; /* White container background */
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    }
+    
+    /* Heading style */
+    h1 {
+      color: #333; /* Dark grey heading */
+      text-align: center;
+    }
+  
+    /* Form styles */
+    form {
+      max-width: 300px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    label {
+      margin-bottom: 5px;
+    }
+  
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="submit"] {
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  
+    input[type="submit"] {
+      background-color: #3498db; /* Blue submit button */
+      color: #fff;
+      cursor: pointer;
+    }
+  
+    input[type="submit"]:hover {
+      background-color: #2980b9; /* Darker blue on hover */
+    }
+  
+    /* Link style */
+    a {
+      color: #3498db; /* Blue link color */
+      text-decoration: none;
+    }
+  
+    a:hover {
+      text-decoration: underline;
+    }
+    .class{
+      margin-bottom:-10px;
+      margin-top:0px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sign Up</h1>
+    <!-- Error message display -->
+    <p id="error-message" style="color: red;width: 100%;text-align: center;">
+      <% if(errorMessage) { %>
+        <%= errorMessage %>
+      <% } %>
+    </p>
+    <!-- Signup form -->
+    <form action="/signup" onsubmit="return validateForm(event)" method="POST">
+      <!-- Username input -->
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username">
+      <small id="username-error" class="small" style="color: red;"></small>
+
+      <!-- Email input -->
+      <label for="email">Email:</label>
+      <input type="text" id="email" name="email">
+      <small id="email-error" class="small" style="color: red;"></small>
+
+      <!-- Password input -->
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password">
+      <small id="password-error" class="small" style="color: red;"></small>
+
+      <!-- Submit button -->
+      <input type="submit" value="Sign Up">
+    </form>
+    <!-- Login link -->
+    <p style="text-align: center;">Already have an account? <a href="/login">Login</a></p>
+  </div>
+
+<script>
+  function validateForm(event) {
+
+    document.getElementById('error-message').innerText = '';
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    // Reset previous error messages
+    document.getElementById('username-error').innerText = '';
+    document.getElementById('email-error').innerText = '';
+    document.getElementById('password-error').innerText = '';
+
+    // Flag to track if any validation fails
+    let isValid = true;
+
+    // Check username validation
+    if (username.length < 4) {
+      document.getElementById('username-error').innerText = 'Username should be at least 4 characters long.';
+      isValid = false;
+    }
+
+    // Check email validation
+    const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailFormat.test(email)) {
+      document.getElementById('email-error').innerText = 'Enter a valid email address.';
+      isValid = false;
+    }
+
+    // Check password validation
+    const passwordFormat = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    if (!passwordFormat.test(password)) {
+      document.getElementById('password-error').innerText = 'Password should be at least 6 characters long and contain at least one letter and one number.';
+      isValid = false;
+    }
+    if(isValid===false){
+      event.preventDefault();
+    }
+    return isValid; // If isValid is true, form will submit; otherwise, it won't
+  }
+</script>
+
+</body>
+</html>

@@ -22,7 +22,7 @@
       padding: 20px;
       background-color: #fff; /* White container background */
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
       text-align: center; /* Center align text */
     }
   
@@ -54,6 +54,9 @@
       color: #fff;
       border: none;
     }
+    .info-button:hover{
+        background-color: #1d8a33;
+    }
 
     .user-details {
       display: none;
@@ -65,7 +68,7 @@
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     }
 
-    .delete-button {
+    .delete-button{
       background-color: #e74c3c;
       color: #fff;
       border: none;
@@ -75,27 +78,51 @@
       border-radius: 4px;
       transition: background-color 0.3s ease;
     }
+    .delete-button:hover , #logout:hover{
+      background-color: rgb(208, 0, 0);
+    }
+    .edit-button {
+      background-color: #3498db; /* Blue button background */
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px; /* Adjust padding for the button */
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+      width: 100%; /* Make the button fill its container */
+      display: block; /* Display the button as a block element */
+      /* margin: 10px 0px; Center align the button */
+    }
+    .edit-button:hover {
+      background-color: #2980b9; /* Darker blue on hover */
+    }
 
-    .delete-button:hover {
-      background-color: #c0392b;
+    #logout{
+        background-color: rgb(232, 3, 3);
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Welcome, <%= username %>!</h1>
-    <p>You are logged in.</p>
-    <a href="#" onclick="confirmLogout()">Logout</a>
+    <p>You are logged in .</p>
+    <a href="#" id="logout" onclick="confirmLogout()">Logout</a>
     <a href="#" onclick="showDetails()" class="info-button">Info</a>
 
     <!-- User details display -->
     <div class="user-details" id="userDetails">
+
       <h2>User Details</h2>
       <p><strong>Username:</strong> <%= username %></p>
       <p><strong>Email:</strong><%= email %></p>
-      <form action="/delete" method="post">
+       
+      <form action=""  method="get">
         <input type="hidden" name="username" value="<%= username %>">
-        <button onclick="deleteUser()" class="delete-button" type="submit">Delete User</button>
+        <a class="edit-button" href="/edit?username=<%= username %>">Edit Details </a>
+      </form>
+      <form action="/delete" onsubmit="deleteUser(event)" method="post">
+        <input type="hidden" name="username" value="<%= username %>">
+        <button class="delete-button" type="submit">Delete User</button>
       </form>
 
     </div>
@@ -117,7 +144,10 @@
       }
 
       function deleteUser() {
-        if (confirm("Are you sure you want to delete your account?")) {
+        if (confirm("Are you sure you want to delete user?")) {
+          window.location.href = "/delete";
+        }else{
+          event.preventDefault();
         }
       }
     </script>

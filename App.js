@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost:27017/ex-crud-database', {
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
-// User Schema
+// User Schema structure of document
 const User = mongoose.model('User', {
     username: String,
     email: String,
@@ -47,7 +47,6 @@ app.post('/login', async (req, res) => {
       }
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
-        // event.preventDefault();
         return res.render('login', { message: 'Incorrect password. Please try again.' });
       }
       res.redirect('/loggedin?username=' + user.username);
@@ -58,16 +57,21 @@ app.post('/login', async (req, res) => {
 
 // Serve the signup page
 app.get('/signup', (req, res) => {
-  res.render('signup');
+  let errorMessage = '';
+  res.render('signup', { errorMessage })
 });
 
 // Handle signup form submission
 app.post('/signup', async (req, res) => {
   const { username, email, password } = req.body;
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ message: 'Email already exists' });
+      let errorMessage = '';
+      if (existingUser.username === username) {
+        errorMessage = 'Username already exists. Please choose another username.';
+      }
+      return res.render('signup', { errorMessage });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
@@ -82,11 +86,7 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-// Serve the loggedin page
-// app.get('/loggedin', (req, res) => {
-//   const { username } = req.query;
-//   res.render('loggedin', { username });
-// });
+
 app.get('/loggedin', async (req, res) => {
     try {
     const { username } = req.query;
@@ -104,17 +104,17 @@ app.get('/loggedin', async (req, res) => {
 app.post('/delete', async (req, res) => {
     try {
       const { username } = req.body;
+      console.log("username : " , req.body);
       const deletedUser = await User.findOneAndDelete({ username });
       if (!deletedUser) {
         return res.status(404).json({ message: 'User not found' });
       }
-      res.redirect('/'); // Redirect to the login page after successful deletion
+      res.redirect('/login'); // Redirect to the login page after successful deletion
     } catch (error) {
       res.status(500).json({ message: 'Error deleting user', error });
     }
   });
- 
-  
+
 
 app.get('/login', (req, res) => {
     res.render('login' , {message : ''});
@@ -123,6 +123,8 @@ app.get('/login', (req, res) => {
 app.get('/logout', (req,res) => {
     res.redirect('/')
 });
+
+  
 
 // Start the server
 const PORT = 3000;
