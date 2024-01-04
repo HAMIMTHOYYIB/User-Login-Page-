@@ -32,7 +32,7 @@
     }
   
     /* Link style */
-    a {
+    .a {
       color: #3498db; /* Blue link color */
       text-decoration: none;
       margin-top: 10px; /* Add space between elements */
@@ -46,15 +46,15 @@
       transition: background-color 0.3s ease; /* Smooth transition */
     }
   
-    a:hover {
+    .a:hover {
       background-color: #2980b9; /* Darker blue on hover */
     }
-    .info-button {
+    #info-button {
       background-color: #2cb247; /* Red button background */
       color: #fff;
       border: none;
     }
-    .info-button:hover{
+    #info-button:hover{
         background-color: #1d8a33;
     }
 
@@ -76,7 +76,7 @@
       cursor: pointer;
       padding: 8px 15px;
       border-radius: 4px;
-      transition: background-color 0.3s ease;
+      transition-duration:0.3s;
     }
     .delete-button:hover , #logout:hover{
       background-color: rgb(208, 0, 0);
@@ -85,16 +85,15 @@
       background-color: #3498db; /* Blue button background */
       color: #fff;
       border: none;
+      margin-top: 10px;
       cursor: pointer;
-      padding: 5px 10px; /* Adjust padding for the button */
+      text-decoration: none;
+      padding: 6px 10px;
       border-radius: 4px;
-      transition: background-color 0.3s ease;
-      width: 100%; /* Make the button fill its container */
-      display: block; /* Display the button as a block element */
-      /* margin: 10px 0px; Center align the button */
+      transition-duration:0.3s;
     }
     .edit-button:hover {
-      background-color: #2980b9; /* Darker blue on hover */
+      background-color: #005892; /* Darker blue on hover */
     }
 
     #logout{
@@ -105,9 +104,9 @@
 <body>
   <div class="container">
     <h1>Welcome, <%= username %>!</h1>
-    <p>You are logged in .</p>
-    <a href="#" id="logout" onclick="confirmLogout()">Logout</a>
-    <a href="#" onclick="showDetails()" class="info-button">Info</a>
+    <p>You have successfully logged in.</p>
+    <a href="#" class="a" id="logout" onclick="confirmLogout()">Logout</a>
+    <a href="#" class="a" onclick="showDetails()" id="info-button">Info</a>
 
     <!-- User details display -->
     <div class="user-details" id="userDetails">

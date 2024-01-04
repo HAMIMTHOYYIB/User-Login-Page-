@@ -115,6 +115,55 @@ app.post('/delete', async (req, res) => {
     }
   });
 
+  // Add/Edit User Form
+app.get('/edit', async (req, res) => {
+  try {
+    const { username } = req.query;
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.render('editUser', { user });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching user details for editing', error });
+  }
+});
+
+
+// Handle Edit User form submission
+app.post('/edit', async (req, res) => {
+  try {
+    const { username, email, currentPassword, newPassword } = req.body;
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    // Validate current password
+    const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!passwordMatch) {
+      return res.render('editUser', { user, errorMessage: 'Current password is incorrect.' });
+    }
+
+    // Update email if changed
+    if (email !== user.email) {
+      user.email = email;
+    }
+
+    // Update password if new password provided
+    if (newPassword) {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+    }
+
+    await user.save();
+    res.redirect(`/loggedin?username=${username}`);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating user details', error });
+  }
+});
+
+
 
 app.get('/login', (req, res) => {
     res.render('login' , {message : ''});
