@@ -2,10 +2,19 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+
 
 const app = express();
 app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
+}));
 
 // Connect to MongoDB 
 mongoose.connect('mongodb://localhost:27017/ex-crud-database', {
@@ -26,16 +35,22 @@ const User = mongoose.model('User', {
 // Serve the login page
 app.get('/', async (req, res) => {
   try {
-    const usersCount = await User.countDocuments();
-    if (usersCount === 0) {
-      res.redirect('/signup');
+    // Check if the user is already logged in by checking the session
+    if (req.session && req.session.username) {
+      res.redirect('/loggedin?username=' + req.session.username);
     } else {
-      res.render('login' , {message : ''});
+      // const usersCount = await User.countDocuments();
+      // if (usersCount === 0) {
+        // res.redirect('/signup');
+      // } else {
+        res.render('login', { message: '' });
+      // }
     }
   } catch (error) {
     res.status(500).json({ message: 'Error checking users', error });
   }
 });
+
 
 // Handle login form submission
 app.post('/login', async (req, res) => {
@@ -49,6 +64,7 @@ app.post('/login', async (req, res) => {
       if (!passwordMatch) {
         return res.render('login', { message: 'Incorrect password. Please try again.' });
       }
+      req.session.username = user.username;
       res.redirect('/loggedin?username=' + user.username);
     } catch (error) {
       res.status(500).json({ message: 'Login failed', error });
@@ -88,17 +104,20 @@ app.post('/signup', async (req, res) => {
 
 
 app.get('/loggedin', async (req, res) => {
-    try {
+  try {
+    if (!req.session || !req.session.username) {
+      return res.redirect('/'); // Redirect to login if session doesn't exist
+    }
     const { username } = req.query;
     const user = await User.findOne({ username });
     if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
     const { email } = user;
     res.render('loggedin', { username, email });
-    } catch (error) {
+  } catch (error) {
     res.status(500).json({ message: 'Error fetching user details', error });
-    }
+  }
 });
 
 app.post('/delete', async (req, res) => {
@@ -172,8 +191,15 @@ app.get('/login', (req, res) => {
     res.render('login' , {message : ''});
   });
 
-app.get('/logout', (req,res) => {
-    res.redirect('/')
+// Handle logout
+app.get('/logout', (req, res) => {
+  // Destroy the session on logout
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error destroying session:', err);
+    }
+    res.redirect('/');
+  });
 });
 
   
