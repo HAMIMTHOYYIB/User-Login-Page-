@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit User</title>
   <script>
-    function displayErrorMessage() {
-      document.getElementById('errorMessage').innerText = 'Current password is incorrect.';
-      event.preventDefault();
-    }
+    // function displayErrorMessage() {
+    //   document.getElementById('errorMessage').innerText = 'Current password is incorrect.';
+    //   event.preventDefault();
+    // }
   </script>
   <style>
     body {
@@ -128,7 +128,7 @@
 </head>
 <body>
   <h1>Edit User Details</h1>
-  <form action="/edit" method="post">
+  <form action="/edit" method="post" onsubmit="return validateForm()">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" value="<%= user.username %>" readonly>
     <small>(Cannot change the username)</small>
@@ -139,7 +139,7 @@
     
     <label for="currentPassword">Your Password:</label>
     <input type="password" id="currentPassword" name="currentPassword">
-    <small id="errorMessage" style="color: red;"></small>
+    <small id="errorMessage" style="color: red;"><%= errorMessage %></small>
     <small>Enter your current password</small>
     
     <label for="newPassword">New Password:</label>
@@ -149,5 +149,25 @@
     <button type="submit" onclick="displayErrorMessage()">Save Changes</button>
     <a href="/loggedin?username=<%= user.username %>"><button type="button">Cancel</button></a> <!-- Cancel button -->
   </form>
+
+  <script>
+    function validateForm() {
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+  
+      // Check if the current password is not empty
+      if (currentPassword.trim() === '') {
+        document.getElementById('errorMessage').innerText = 'Please enter your current password.';
+        return false; // Prevent form submission
+      }
+  
+      // If the current password is not empty, clear the error message
+      document.getElementById('errorMessage').innerText = '';
+  
+      // Validation successful, allow form submission
+      return true;
+    }
+  </script>
+  
 </body>
 </html>
