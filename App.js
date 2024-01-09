@@ -177,7 +177,8 @@ app.post('/edit', async (req, res) => {
       user.password = hashedPassword;
     }
     await user.save();
-    res.redirect(`/loggedin?username=${username}`);
+    // res.redirect(`/loggedin?username=${username}`);
+    res.render('loggedin', { username, email });
     
   }  catch (error) {
     res.status(500).json({ message: 'Error updating user details', error });
