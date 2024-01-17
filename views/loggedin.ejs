@@ -104,12 +104,12 @@
 <body>
   <div class="container">
     <h1>Welcome, <%= username %>!</h1>
-    <p>You have successfully logged in.</p>
+    <p>You have logged in.</p>
     <a href="#" class="a" id="logout" onclick="confirmLogout()">Logout</a>
     <a href="#" class="a" onclick="showDetails()" id="info-button">Info</a>
 
-    <!-- User details display -->
-    <div class="user-details" id="userDetails">
+    <!-- info button on click  -->
+     <div class="user-details" id="userDetails"> <!--display none -->
 
       <h2>User Details</h2>
       <p><strong>Username:</strong> <%= username %></p>

@@ -129,27 +129,27 @@
 
     // Check username validation
     if (username.length < 4) {
-      document.getElementById('username-error').innerText = 'Username should be at least 4 characters long.';
+      document.getElementById('username-error').innerText = 'Username should be at least 4 characters.';
       isValid = false;
     }
 
     // Check email validation
     const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailFormat.test(email)) {
-      document.getElementById('email-error').innerText = 'Enter a valid email address.';
+      document.getElementById('email-error').innerText = 'Enter a valid email.';
       isValid = false;
     }
 
     // Check password validation
     const passwordFormat = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
     if (!passwordFormat.test(password)) {
-      document.getElementById('password-error').innerText = 'Password should be at least 6 characters long and contain at least one letter and one number.';
+      document.getElementById('password-error').innerText = 'Password should be at least 6 characters and contain at least one letter and one number.';
       isValid = false;
     }
     if(isValid===false){
       event.preventDefault();
     }
-    return isValid; // If isValid is true, form will submit; otherwise, it won't
+    return isValid; //true or false if true only the form submits
   }
 </script>
 
